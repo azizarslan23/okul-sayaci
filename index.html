@@ -1,28 +1,54 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Okul Sayacı</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Geri Sayım</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-blue-200 to-purple-300 flex items-center justify-center min-h-screen">
-  <div class="bg-white shadow-2xl rounded-2xl p-10 text-center max-w-md w-full">
-    <h1 class="text-3xl font-bold text-gray-800 mb-4">Okulun Açılmasına Kalan Süre</h1>
-    <div id="countdown" class="text-4xl font-mono text-purple-700"></div>
-    <p class="mt-4 text-gray-500 text-sm">Hazırlıklı ol! Tatil bitiyor :)</p>
+<body class="bg-gradient-to-br from-blue-200 to-purple-300 min-h-screen flex flex-col items-center justify-center p-4">
+
+  <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">📚 Okul ve Sınav Geri Sayımı</h1>
+
+  <!-- Butonlar -->
+  <div class="flex gap-4 mb-6 flex-wrap justify-center">
+    <button onclick="showCountdown('school')" class="bg-white hover:bg-purple-100 text-purple-700 font-semibold px-5 py-2 rounded-xl shadow">🎒 Okul</button>
+    <button onclick="showCountdown('yks')" class="bg-white hover:bg-purple-100 text-purple-700 font-semibold px-5 py-2 rounded-xl shadow">📘 YKS 2026</button>
+    <button onclick="showCountdown('lgs')" class="bg-white hover:bg-purple-100 text-purple-700 font-semibold px-5 py-2 rounded-xl shadow">📗 LGS 2026</button>
+  </div>
+
+  <!-- Sayaç Alanı -->
+  <div id="countdown-container" class="bg-white p-6 rounded-2xl shadow-xl text-center w-full max-w-md">
+    <h2 id="countdown-title" class="text-2xl font-bold text-gray-700 mb-4">Okulun Açılmasına Kalan Süre</h2>
+    <div id="countdown" class="text-3xl font-mono text-purple-700"></div>
+    <p class="mt-2 text-sm text-gray-500">Hazırlıklı ol!</p>
   </div>
 
   <script>
-    // Okulun başlama tarihi: 9 Eylül 2025 (değiştirebilirsin)
-    const schoolStartDate = new Date("2025-09-09T08:00:00");
+    const countdownDates = {
+      school: {
+        title: "Okulun Açılmasına Kalan Süre",
+        date: new Date("2025-09-08T08:00:00")
+      },
+      yks: {
+        title: "YKS 2026 Sınavına Kalan Süre",
+        date: new Date("2026-06-20T09:30:00")  // Tahmini tarih
+      },
+      lgs: {
+        title: "LGS 2026 Sınavına Kalan Süre",
+        date: new Date("2026-06-14T09:30:00")  // Tahmini tarih
+      }
+    };
+
+    let currentTarget = "school";
 
     function updateCountdown() {
       const now = new Date();
-      const diff = schoolStartDate - now;
+      const target = countdownDates[currentTarget];
+      const diff = target.date - now;
 
       if (diff <= 0) {
-        document.getElementById("countdown").textContent = "Okul başladı!";
+        document.getElementById("countdown").textContent = "Zaman geldi!";
         return;
       }
 
@@ -35,6 +61,13 @@
         `${days}g ${hours}s ${minutes}d ${seconds}s`;
     }
 
+    function showCountdown(target) {
+      currentTarget = target;
+      document.getElementById("countdown-title").textContent = countdownDates[target].title;
+      updateCountdown();
+    }
+
+    // Başlangıçta okul sayaç
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>
